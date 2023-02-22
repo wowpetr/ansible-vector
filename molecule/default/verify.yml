@@ -1,0 +1,29 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+
+  - name: Validate vector config
+    ansible.builtin.shell: /usr/bin/vector validate /etc/vector/vector.toml 
+    become: true
+    register: vector_validate
+
+  - name: Assert that the vector config is valid
+    assert:
+      that: vector_validate.rc == 0
+      success_msg: Vector config is valid
+      fail_msg: Vector config is not valid
+
+  - name: Validate vector process
+    ansible.builtin.shell: pgrep vector
+    become: true
+    register: vector_process
+    
+  - name: Assert that vector is running
+    assert:
+      that: vector_process.rc == 0
+      success_msg: Vector is running
+      fail_msg: Vector is not running

@@ -1,6 +1,14 @@
 ---
-- name: Start vector service
+- name: Start systemd vector service
   become: true
   ansible.builtin.service:
     name: vector
     state: restarted
+  listen: "Start vector service"
+  when: not ansible_module_running_in_container
+
+- name: Start vector service manually
+  become: true
+  ansible.builtin.shell: "vector --config /etc/vector/vector.toml >/dev/null 2>&1 &"
+  listen: "Start vector service"
+  when: ansible_module_running_in_container

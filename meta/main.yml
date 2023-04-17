@@ -1,4 +1,6 @@
 galaxy_info:
+  role_info: vector
+  namespace: wowpetr
   author: Petr Losev
   description: This role installs vector 
   company: netology
